@@ -67,5 +67,6 @@ def update():
     alien2.deplacement_rampant(keyboard,animate,sounds, clock)
 
     # la gestion de la suite dois être placé ici
+    alien2.wall_teleport()
     
 pgzrun.go()

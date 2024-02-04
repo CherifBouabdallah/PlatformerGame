@@ -32,6 +32,13 @@ def monde_rect():
                     L_monde.append((img, img_rect,i))
 
 
+                if i== 3: 
+                    img = pygame.transform.scale(cloud_img, (pixel, pixely))
+                    img_rect = img.get_rect()
+                    img_rect.x=nb_col*pixel
+                    img_rect.y=nb_ligne*pixely
+                    L_monde.append((img, img_rect,i))
+
                     
                 nb_col += 1
             nb_ligne +=1

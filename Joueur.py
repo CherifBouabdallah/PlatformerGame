@@ -39,10 +39,16 @@ class Joueur():
     ## Il avance à chauqe itération  
 
     def deplacement_volant(self):
-        self.actor.left += 2  # déplace le self de 2 pixel vers la gauche
+        self.actor.left += 3  # déplace le self de 3 pixel vers la gauche
         if self.actor.left > WIDTH: # Si le  personnage sort de l'écran. 
             self.actor.right = 0 # Il revient au début
 
+    def wall_teleport(self):
+        if self.actor.right < 0: # Si le  personnage sort de l'écran coté gauche. 
+            self.actor.right = WIDTH # Il revient au coté droit
+
+        if self.actor.left > WIDTH: # Si le  personnage sort de l'écran. 
+            self.actor.left = 0 # Il revient au début
 
 
     ## Méthode de déplacement d'un personnage au sol. 
@@ -64,10 +70,10 @@ class Joueur():
 
         # gestion des déplacements
         if keyboard.left: # Gestion de la touche clavier "left"
-            dx=-3
+            dx=-6
             self.gauche=True # Il regarde à gauche 
         if keyboard.right: # Gestion de la touche clavier "right"
-            dx=3
+            dx=6
             self.gauche=False  # Il regarde à droite
 
         
@@ -84,7 +90,7 @@ class Joueur():
                     dx=0
 
         # Gestion de la touche clavier "up"
-        if keyboard.up:
+        if keyboard.space:
             if dy==0: # Si il est au sol ( Il ne peut plus descendre)
                 # Cette fonction crée une animation de déplacement pour notre personnage. Ici, 
                 # décélérate, fait un début rapide qui ralenti. 
@@ -115,3 +121,7 @@ class Joueur():
         animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
         clock.schedule_unique(self.set_alien_normal, 1.0)
         self.vivant=False
+
+class Ennemy(Joueur): #code repris du cours.
+    def __init__(self, actor, scale=1, name="Ennemy"):
+        super.__init__(self, actor, scale, name)
