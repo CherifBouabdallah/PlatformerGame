@@ -11,9 +11,11 @@ from Initialisation import *
 ## Initialisation du jeu 
 ################################################################################################################
 L_alien=[]
-alien, alien2= initialisation(Actor)
+alien, alien2, ennemy = initialisation(Actor)
 L_alien.append(alien)
 L_alien.append(alien2)
+L_alien.append(ennemy)
+
 
 ################################################################################################################
 ## Gestion des évènements
@@ -35,9 +37,8 @@ def on_mouse_down(pos,button):
 # Elle gère l'affichage du monde 
 def draw():
     screen.clear() ## Efface l'écran précédent
-    bkg=pygame.image.load("./images/alien.png")
-    bkg_img=pygame.transform.scale(bkg,(1000,1000))
-    
+    bkg_img=pygame.transform.scale(bkg,(WIDTH, HEIGHT))
+    screen.blit(bkg_img ,(0,0))
     
     
     draw_monde(screen)
@@ -65,8 +66,8 @@ def update():
 
     # Déplacement de l'alien rampant
     alien2.deplacement_rampant(keyboard,animate,sounds, clock)
+    ennemy.deplacement_rampant()
 
     # la gestion de la suite dois être placé ici
-    alien2.wall_teleport()
     
 pgzrun.go()

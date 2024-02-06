@@ -43,6 +43,7 @@ def monde_rect():
                 nb_col += 1
             nb_ligne +=1
 
+
         return L_monde
 
 ## Cette fonction dessine les blocs sur l'écran 

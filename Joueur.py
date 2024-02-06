@@ -9,7 +9,7 @@ from Monde import *
 
 class Joueur(): 
 
-    ## Initialisation, j'ai be soin du paramètre actor (type particulier défini par pygame zero)
+    ## Initialisation, j'ai besoin du paramètre actor (type particulier défini par pygame zero)
 
     def __init__(self, actor, scale=1, name="alien"):
         self.actor=actor # paramètre actor de pygame zero
@@ -76,6 +76,11 @@ class Joueur():
             dx=6
             self.gauche=False  # Il regarde à droite
 
+        if self.actor.right < 0: # Si le  personnage sort de l'écran coté gauche. 
+            self.actor.right = WIDTH # Il revient au coté droit
+        if self.actor.left > WIDTH: # Si le  personnage sort de l'écran. 
+            self.actor.left = 0 # Il revient au début
+
         
         # Gestion des collisions avec le monde 
         for bloc in L_monde:
@@ -90,7 +95,7 @@ class Joueur():
                     dx=0
 
         # Gestion de la touche clavier "up"
-        if keyboard.space:
+        if keyboard.space or keyboard.up:
             if dy==0: # Si il est au sol ( Il ne peut plus descendre)
                 # Cette fonction crée une animation de déplacement pour notre personnage. Ici, 
                 # décélérate, fait un début rapide qui ralenti. 
@@ -123,5 +128,10 @@ class Joueur():
         self.vivant=False
 
 class Ennemy(Joueur): #code repris du cours.
-    def __init__(self, actor, scale=1, name="Ennemy"):
-        super.__init__(self, actor, scale, name)
+    def __init__(self, actor, scale=1, name="ennemy"):
+        super().__init__(actor, scale, name)
+
+    def deplacement_rampant(self):
+        self.actor.left += 10  # déplace le self de 3 pixel vers la gauche
+        if self.actor.left > WIDTH: # Si le  personnage sort de l'écran. 
+            self.actor.right = 0 # Il revient au début 

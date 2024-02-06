@@ -26,6 +26,7 @@ Monde=[
 lava_img = pygame.image.load('images/lave.png')
 dirt_img = pygame.image.load('images/grass.png')
 cloud_img = pygame.image.load('images/cloud.png')
+bkg=pygame.image.load("./images/windows_xp.png") #image de fond
 
 ## Constante de gravité de notre monde
 gravity=0.04
