@@ -25,7 +25,7 @@ class Joueur():
     # 1. Définir une échelle ( un facteur multiplicatif: 2 veut dire 2fois plus grande)
     # 2. Définir une taille. Mettre scale à 0 et donner des valeurs pour transform
 
-    def image(self,name, scale=0.5, transform=(pixel/2,pixely/2)):
+    def image(self,name, scale, transform=(pixel/2,pixely/2)):
         if scale!=0:
             self.actor.image=name
             self.actor.scale=scale
@@ -88,7 +88,7 @@ class Joueur():
                     dx=0
         
         if self.actor.colliderect(enenemy.actor.left, enenemy.actor.top+dy, enenemy.actor.width, enenemy.actor.height):
-            print("collision")
+            self.set_alien_death(sounds,animate,clock)
 
         # Gestion de la touche clavier "up"
         if keyboard.space or keyboard.up:
@@ -127,12 +127,10 @@ class Ennemy(Joueur): #code repris du cours.
     def __init__(self, actor, scale=1, name="ennemy"):
         super().__init__(actor, scale, name)
 
-    def deplacement_rampant(self, dx, dy):
+    def deplacement_rampant(self, dy):
         L_monde=monde_rect() # Création du monde 
         # définition des variables de déplacement
-
-        # dy=2 # Déplacement uniforme on tient pas compte de la gravité
-      
+        dx = 5
         # Si on veut tenir compte de la gravité 
         self.vitesse+=gravity # On fait augmenter la vitesse de chute 
         dy=self.vitesse # On déplace de la vitesse
@@ -149,24 +147,26 @@ class Ennemy(Joueur): #code repris du cours.
                 self.vitesse=0 # On remet la vitesse à 0 
                 if bloc[2]==2: # On regarde si le bloc est de la lave. Si c'est de la lave. Le joueur meurt 
                     self.set_alien_death(sounds,animate,clock)
+                if bloc[1].colliderect(self.actor.left+dx, self.actor.top, self.actor.width, self.actor.height):
+                    if dx < 0:
+                        dx = 5
+                    if dx > 0:
+                        dx = -5
 
-            if bloc[1].colliderect(self.actor.left+dx, self.actor.top, self.actor.width, self.actor.height):
-                dx = -5
-
-
-        self.actor.bottom += dy            
-        self.actor.left -= dx # Pas de déplacement de base horizontal
+        self.actor.bottom += dy           
+        self.actor.left += dx
 
         # gestion des déplacements
-        if dx > 0: # Gestion de la touche clavier "left"
+        if dx < 0: # Gestion de la touche clavier "left"
             self.gauche=True # Il regarde à gauche 
-        if dx < 0: # Gestion de la touche clavier "right"
+        if dx > 0: # Gestion de la touche clavier "right"
             self.gauche=False  # Il regarde à droite
         if self.gauche:
             self.image('ennemy_g',self.scale)
         else: 
             self.image('ennemy',self.scale)
-        
+
+
         #self.actor.right -= 10  # déplace le self de 3 pixel vers la gauche
         #if self.actor.right < 0: # Si le  personnage sort de l'écran coté gauche. 
         #    self.actor.left = WIDTH # Il revient au coté droit

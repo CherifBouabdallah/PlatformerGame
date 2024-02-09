@@ -16,7 +16,6 @@ L_alien.append(alien)
 L_alien.append(alien2)
 L_alien.append(ennemy)
 
-
 ################################################################################################################
 ## Gestion des évènements
 ################################################################################################################
@@ -66,7 +65,7 @@ def update():
 
     # Déplacement de l'alien rampant
     alien2.deplacement_rampant(ennemy, keyboard,animate,sounds, clock)
-    ennemy.deplacement_rampant(5, gravity)
+    ennemy.deplacement_rampant(gravity)
 
     # la gestion de la suite dois être placé ici
     
