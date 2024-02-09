@@ -43,13 +43,6 @@ class Joueur():
         if self.actor.left > WIDTH: # Si le  personnage sort de l'écran. 
             self.actor.right = 0 # Il revient au début
 
-    def wall_teleport(self):
-        if self.actor.right < 0: # Si le  personnage sort de l'écran coté gauche. 
-            self.actor.right = WIDTH # Il revient au coté droit
-
-        if self.actor.left > WIDTH: # Si le  personnage sort de l'écran. 
-            self.actor.left = 0 # Il revient au début
-
 
     ## Méthode de déplacement d'un personnage au sol. 
     ## Il tient compte: 
@@ -57,7 +50,7 @@ class Joueur():
         # 2. De la gravité
         # 3. Des touches claviers 
 
-    def deplacement_rampant(self,keyboard,animate,sounds, clock):
+    def deplacement_rampant(self, keyboard, animate, sounds, clock):
         L_monde=monde_rect() # Création du monde 
       
         # définition des variables de déplacement
@@ -93,6 +86,11 @@ class Joueur():
                 #collision horizontale: on regarde les collision horizontale
                 if bloc[1].colliderect(self.actor.left+dx, self.actor.top, self.actor.width, self.actor.height):
                     dx=0
+        
+
+
+        if self.actor.colliderect(Ennemy.actor.left, Ennemy.actor.top+dy, Ennemy.actor.width, Ennemy.actor.height):
+            print('bhisdhvbvxdfvbh')
 
         # Gestion de la touche clavier "up"
         if keyboard.space or keyboard.up:
@@ -131,7 +129,44 @@ class Ennemy(Joueur): #code repris du cours.
     def __init__(self, actor, scale=1, name="ennemy"):
         super().__init__(actor, scale, name)
 
-    def deplacement_rampant(self):
-        self.actor.left += 10  # déplace le self de 3 pixel vers la gauche
+    def deplacement_rampant(self, dy):
+        L_monde=monde_rect() # Création du monde 
+        # définition des variables de déplacement
+        dx = 5
+
+        for bloc in L_monde:
+                #collision verticale: on regarde si la future position va rentrer en conflit avec un bloc  du monde
+                if bloc[1].colliderect(self.actor.left, self.actor.top+dy, self.actor.width, self.actor.height):
+                    dy=0 # Si il y a conflit/ collision on bouge pas 
+                    self.vitesse=0 # On remet la vitesse à 0 
+                    if bloc[2]==2: # On regarde si le bloc est de la lave. Si c'est de la lave. Le joueur meurt 
+                        self.set_alien_death(sounds,animate,clock)
+
+        self.actor.left -= dx # Pas de déplacement de base horizontal
+        # dy=2 # Déplacement uniforme on tient pas compte de la gravité
+      
+        # Si on veut tenir compte de la gravité 
+        self.vitesse+=gravity # On fait augmenter la vitesse de chute 
+        dy=self.vitesse # On déplace de la vitesse
+
+        self.actor.bottom += dy
+
+        # gestion des déplacements
+        if dx > 0: # Gestion de la touche clavier "left"
+            self.gauche=True # Il regarde à gauche 
+        if dx < 0: # Gestion de la touche clavier "right"
+            self.gauche=False  # Il regarde à droite
+
+        if self.actor.right < 0: # Si le  personnage sort de l'écran coté gauche. 
+            self.actor.right = WIDTH # Il revient au coté droit
         if self.actor.left > WIDTH: # Si le  personnage sort de l'écran. 
-            self.actor.right = 0 # Il revient au début 
+            self.actor.left = 0 # Il revient au début
+ 
+        if self.gauche:
+            self.image('ennemy_g',self.scale)
+        else: 
+            self.image('ennemy',self.scale)
+
+        #self.actor.right -= 10  # déplace le self de 3 pixel vers la gauche
+        #if self.actor.right < 0: # Si le  personnage sort de l'écran coté gauche. 
+        #    self.actor.left = WIDTH # Il revient au coté droit

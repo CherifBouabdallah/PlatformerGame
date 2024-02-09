@@ -66,7 +66,7 @@ def update():
 
     # Déplacement de l'alien rampant
     alien2.deplacement_rampant(keyboard,animate,sounds, clock)
-    ennemy.deplacement_rampant()
+    ennemy.deplacement_rampant(gravity)
 
     # la gestion de la suite dois être placé ici
     
