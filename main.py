@@ -15,6 +15,7 @@ alien, alien2, ennemy = initialisation(Actor)
 L_alien.append(alien)
 L_alien.append(alien2)
 L_alien.append(ennemy)
+assf
 
 ################################################################################################################
 ## Gestion des évènements
@@ -47,9 +48,11 @@ def draw():
             i.image(i.name+"_g",i.scale)
         else: 
             i.image(i.name,i.scale)
- 
+        
     if not alien2.vivant:
-        screen.draw.text("You Loose", (WIDTH/2-pixel, HEIGHT/2-pixely), color="red", fontsize=60)
+        screen.draw.text("You Lose", (WIDTH/2-pixel, HEIGHT/2-pixely), color="red", fontsize=60)
+
+
 
 ################################################################################################################
 ## Mise à jour

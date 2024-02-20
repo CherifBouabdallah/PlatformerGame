@@ -1,4 +1,5 @@
 import pgzrun
+import time
 from pgzhelper import *
 from Parametre import *
 from Monde import *
@@ -50,7 +51,7 @@ class Joueur():
         # 2. De la gravité
         # 3. Des touches claviers 
 
-    def deplacement_rampant(self,enenemy, keyboard, animate, sounds, clock):
+    def deplacement_rampant(self,ennemy, keyboard, animate, sounds, clock):
         L_monde=monde_rect() # Création du monde 
       
         # définition des variables de déplacement
@@ -63,15 +64,15 @@ class Joueur():
 
         # gestion des déplacements
         if keyboard.left: # Gestion de la touche clavier "left"
-            dx=-6
+            dx=-8
             self.gauche=True # Il regarde à gauche 
         if keyboard.right: # Gestion de la touche clavier "right"
-            dx=6
+            dx=8
             self.gauche=False  # Il regarde à droite
 
         if self.actor.right < 0: # Si le  personnage sort de l'écran coté gauche. 
             self.actor.right = WIDTH # Il revient au coté droit
-        if self.actor.left > WIDTH: # Si le  personnage sort de l'écran. 
+        if self.actor.left+dx > WIDTH: # Si le  personnage sort de l'écran. 
             self.actor.left = 0 # Il revient au début
 
         
@@ -87,7 +88,7 @@ class Joueur():
                 if bloc[1].colliderect(self.actor.left+dx, self.actor.top, self.actor.width, self.actor.height):
                     dx=0
         
-        if self.actor.colliderect(enenemy.actor.left, enenemy.actor.top+dy, enenemy.actor.width, enenemy.actor.height):
+        if self.actor.colliderect(ennemy.actor.left, ennemy.actor.top+dy, ennemy.actor.width, ennemy.actor.height):
             self.set_alien_death(sounds,animate,clock)
 
         # Gestion de la touche clavier "up"
@@ -96,7 +97,8 @@ class Joueur():
                 # Cette fonction crée une animation de déplacement pour notre personnage. Ici, 
                 # décélérate, fait un début rapide qui ralenti. 
                 # Il se déplace de 2 pixel de hauteur 
-                animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],self.actor.pos[1]-2*pixely)) 
+                self.vitesse = -15
+
 
         # Une fois que l'on sait de combien on se déplace, on fait effectivement les déplacement    
         self.actor.x +=dx # déplacement en x 
@@ -123,7 +125,7 @@ class Joueur():
         clock.schedule_unique(self.set_alien_normal, 1.0)
         self.vivant=False
 
-class Ennemy(Joueur): #code repris du cours.
+class Ennemy(Joueur): #code repris du cours. héritage
     def __init__(self, actor, scale=1, name="ennemy"):
         super().__init__(actor, scale, name)
 
@@ -131,13 +133,20 @@ class Ennemy(Joueur): #code repris du cours.
         L_monde=monde_rect() # Création du monde 
         # définition des variables de déplacement
         dx = 5
+        
+        if self.gauche == True:
+            dx = -5
+        else:
+            dx = 5
+
+
         # Si on veut tenir compte de la gravité 
         self.vitesse+=gravity # On fait augmenter la vitesse de chute 
         dy=self.vitesse # On déplace de la vitesse
 
         if self.actor.right < 0: # Si le  personnage sort de l'écran coté gauche. 
             self.actor.right = WIDTH # Il revient au coté droit
-        if self.actor.left > WIDTH: # Si le  personnage sort de l'écran. 
+        if self.actor.left+dx > WIDTH: # Si le  personnage sort de l'écran. 
             self.actor.left = 0 # Il revient au début
 
         for bloc in L_monde:
@@ -147,19 +156,18 @@ class Ennemy(Joueur): #code repris du cours.
                 self.vitesse=0 # On remet la vitesse à 0 
                 if bloc[2]==2: # On regarde si le bloc est de la lave. Si c'est de la lave. Le joueur meurt 
                     self.set_alien_death(sounds,animate,clock)
-                if bloc[1].colliderect(self.actor.left+dx, self.actor.top, self.actor.width, self.actor.height):
+                if bloc[1].colliderect(self.actor.left, self.actor.top, self.actor.width, self.actor.height):
                     if dx < 0:
                         dx = 5
-                    if dx > 0:
+                    else:
                         dx = -5
 
         self.actor.bottom += dy           
         self.actor.left += dx
-
         # gestion des déplacements
-        if dx < 0: # Gestion de la touche clavier "left"
+        if dx < 0: # Gestion de la direction
             self.gauche=True # Il regarde à gauche 
-        if dx > 0: # Gestion de la touche clavier "right"
+        else: # Gestion de la direction
             self.gauche=False  # Il regarde à droite
         if self.gauche:
             self.image('ennemy_g',self.scale)
