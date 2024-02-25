@@ -10,12 +10,11 @@ from Initialisation import *
 ################################################################################################################
 ## Initialisation du jeu 
 ################################################################################################################
-L_alien=[]
+
 alien, alien2, ennemy = initialisation(Actor)
 L_alien.append(alien)
 L_alien.append(alien2)
-L_alien.append(ennemy)
-assf
+L_ennemy.append(ennemy)
 
 ################################################################################################################
 ## Gestion des évènements
@@ -48,6 +47,13 @@ def draw():
             i.image(i.name+"_g",i.scale)
         else: 
             i.image(i.name,i.scale)
+
+    for i in L_ennemy:
+        i.actor.draw()
+        if i.gauche:
+            i.image(i.name+"_g",i.scale)
+        else: 
+            i.image(i.name,i.scale)    
         
     if not alien2.vivant:
         screen.draw.text("You Lose", (WIDTH/2-pixel, HEIGHT/2-pixely), color="red", fontsize=60)
@@ -68,7 +74,9 @@ def update():
 
     # Déplacement de l'alien rampant
     alien2.deplacement_rampant(ennemy, keyboard,animate,sounds, clock)
-    ennemy.deplacement_rampant(gravity)
+    alien2.DEV_MODE(keyboard, dev_mode)
+    ennemy.deplacement_rampant(gravity, sounds, animate, clock) 
+    ennemy.set_ennemy_death(sounds, animate, dev_mode, alien2)
 
     # la gestion de la suite dois être placé ici
     

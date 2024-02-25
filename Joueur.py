@@ -20,6 +20,8 @@ class Joueur():
         self.vivant=True # Est-ce qu'il est encore vivant
         self.actor.scale=scale # Permet de gérer la taille de l'image du personnage
         self.name=name # Nom de l'image
+        self.jump_count = 0
+        self.max_jump = 2
 
     ## Cette méthode permet l'affichage d'une image à taille voulu. 
     ## Il y a deux options
@@ -51,7 +53,7 @@ class Joueur():
         # 2. De la gravité
         # 3. Des touches claviers 
 
-    def deplacement_rampant(self,ennemy, keyboard, animate, sounds, clock):
+    def deplacement_rampant(self, ennemy, keyboard, animate, sounds, clock):
         L_monde=monde_rect() # Création du monde 
       
         # définition des variables de déplacement
@@ -83,21 +85,23 @@ class Joueur():
                     dy=0 # Si il y a conflit/ collision on bouge pas 
                     self.vitesse=0 # On remet la vitesse à 0 
                     if bloc[2]==2: # On regarde si le bloc est de la lave. Si c'est de la lave. Le joueur meurt 
-                        self.set_alien_death(sounds,animate,clock)
+                        self.set_alien_death(sounds,animate,clock, dev_mode)
                 #collision horizontale: on regarde les collision horizontale
                 if bloc[1].colliderect(self.actor.left+dx, self.actor.top, self.actor.width, self.actor.height):
                     dx=0
         
-        if self.actor.colliderect(ennemy.actor.left, ennemy.actor.top+dy, ennemy.actor.width, ennemy.actor.height):
-            self.set_alien_death(sounds,animate,clock)
+        #if self.actor.colliderect(ennemy.actor.left, ennemy.actor.top, ennemy.actor.width, ennemy.actor.height):
+        #    self.set_alien_death(sounds,animate,clock, dev_mode)
 
+    
         # Gestion de la touche clavier "up"
         if keyboard.space or keyboard.up:
-            if dy==0: # Si il est au sol ( Il ne peut plus descendre)
-                # Cette fonction crée une animation de déplacement pour notre personnage. Ici, 
-                # décélérate, fait un début rapide qui ralenti. 
-                # Il se déplace de 2 pixel de hauteur 
+            if dy== 0: #or self.jump_count < self.max_jump: # Si il est au sol
                 self.vitesse = -15
+                self.jump_count += 1
+
+        if dy == 0:
+            self.jump_count = 0
 
 
         # Une fois que l'on sait de combien on se déplace, on fait effectivement les déplacement    
@@ -117,19 +121,37 @@ class Joueur():
         else: 
             self.image('alien',self.scale)
 
-    # Défini ce qui se passe si l'alien meurt
-    def set_alien_death(self, sounds,animate, clock):
-        self.image('alien_hurt',self.scale) 
-        sounds.death.play()
-        animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
-        clock.schedule_unique(self.set_alien_normal, 1.0)
-        self.vivant=False
 
+    def DEV_MODE(self, keyboard, dev_mode): #cette fonction va me permettre d'etre invincible
+        if keyboard.k:
+            dev_mode = True
+            self.topright = 0, 0
+            print('DEV_MODE on')
+
+        if keyboard.l:
+            dev_mode = False
+            print('DEV_Mode off')
+            print(dev_mode)
+
+        #print(dev_mode)    
+        return dev_mode
+    
+    # Défini ce qui se passe si l'alien meurt
+    def set_alien_death(self, sounds,animate, clock, dev_mode):
+        if not dev_mode:
+            self.image('alien_hurt',self.scale) 
+            sounds.death.play()
+            animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
+            clock.schedule_unique(self.set_alien_normal, 1.0)
+            self.vivant = False
+        
+
+            
 class Ennemy(Joueur): #code repris du cours. héritage
     def __init__(self, actor, scale=1, name="ennemy"):
         super().__init__(actor, scale, name)
 
-    def deplacement_rampant(self, dy):
+    def deplacement_rampant(self, dy, sounds, animate, clock):
         L_monde=monde_rect() # Création du monde 
         # définition des variables de déplacement
         dx = 5
@@ -154,13 +176,12 @@ class Ennemy(Joueur): #code repris du cours. héritage
             if bloc[1].colliderect(self.actor.left, self.actor.top+dy, self.actor.width, self.actor.height):
                 dy=0 # Si il y a conflit/ collision on bouge pas 
                 self.vitesse=0 # On remet la vitesse à 0 
-                if bloc[2]==2: # On regarde si le bloc est de la lave. Si c'est de la lave. Le joueur meurt 
-                    self.set_alien_death(sounds,animate,clock)
                 if bloc[1].colliderect(self.actor.left, self.actor.top, self.actor.width, self.actor.height):
                     if dx < 0:
                         dx = 5
                     else:
                         dx = -5
+
 
         self.actor.bottom += dy           
         self.actor.left += dx
@@ -174,6 +195,13 @@ class Ennemy(Joueur): #code repris du cours. héritage
         else: 
             self.image('ennemy',self.scale)
 
+
+    def set_ennemy_death(self, sounds, animate, dev_mode, alien):
+        if not dev_mode and alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom <= self.actor.top and alien.actor.bottom >= self.actor.top - 4: #code inspiré de jonathan !
+            sounds.death.play()
+            animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
+            self.vivant = False
+    
 
         #self.actor.right -= 10  # déplace le self de 3 pixel vers la gauche
         #if self.actor.right < 0: # Si le  personnage sort de l'écran coté gauche. 
