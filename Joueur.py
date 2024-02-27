@@ -90,6 +90,7 @@ class Joueur():
                 if bloc[1].colliderect(self.actor.left+dx, self.actor.top, self.actor.width, self.actor.height):
                     dx=0
         
+        
         #if self.actor.colliderect(ennemy.actor.left, ennemy.actor.top, ennemy.actor.width, ennemy.actor.height):
         #    self.set_alien_death(sounds,animate,clock, dev_mode)
 
@@ -196,13 +197,13 @@ class Ennemy(Joueur): #code repris du cours. héritage
             self.image('ennemy',self.scale)
 
 
-    def set_ennemy_death(self, sounds, animate, dev_mode, alien):
-        if not dev_mode and alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom <= self.actor.top and alien.actor.bottom >= self.actor.top - 4: #code inspiré de jonathan !
+    def set_ennemy_death(self, sounds, animate, dev_mode, alien, clock):
+
+        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom >= self.actor.top-6 and alien.actor.bottom <= self.actor.top: #code inspiré de jonathan !
             sounds.death.play()
             animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
             self.vivant = False
-    
+        
+        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.top >= self.actor.top-6:
+            alien.set_alien_death(sounds, animate, clock, dev_mode)
 
-        #self.actor.right -= 10  # déplace le self de 3 pixel vers la gauche
-        #if self.actor.right < 0: # Si le  personnage sort de l'écran coté gauche. 
-        #    self.actor.left = WIDTH # Il revient au coté droit

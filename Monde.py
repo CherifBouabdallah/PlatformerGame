@@ -1,4 +1,5 @@
 import pygame
+import time
 from Parametre import * 
 
 ''' Ce fichier gère la création du monde, l'affichage et l'enregistrement des positions des blocs'''
@@ -52,3 +53,10 @@ def draw_monde(screen):
         L_monde=monde_rect()
         for bloc in L_monde:
             screen.blit(bloc[0],bloc[1]) # cette fontion permet d'afficher les blocs 
+
+def timer(screen):
+    for i in range(3, 0, -1):
+        text = font.render(str(i), True, 'green', 'blue')
+        textRect = text.get_rect()
+        textRect.center = (WIDTH // 2, HEIGHT // 2)
+        screen.blit(text, textRect)
