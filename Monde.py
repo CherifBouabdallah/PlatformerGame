@@ -53,12 +53,3 @@ def draw_monde(screen):
         L_monde=monde_rect()
         for bloc in L_monde:
             screen.blit(bloc[0],bloc[1]) # cette fontion permet d'afficher les blocs 
-
-def timer(screen):
-    for i in range(3, 0, -1):
-        text = font.render(str(i), True, black)
-        screen.draw.text("fvagvbsfcfgdg", (WIDTH/2-pixel, HEIGHT/2-pixely), color="red", fontsize=60)
-        textRect = text.get_rect()
-        textRect.center = (700, 500)
-        screen.blit(text, textRect)
-        #time.sleep(1)

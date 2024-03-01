@@ -199,11 +199,11 @@ class Ennemy(Joueur): #code repris du cours. héritage
 
     def set_ennemy_death(self, sounds, animate, dev_mode, alien, clock):
 
-        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom >= self.actor.top-6 and alien.actor.bottom <= self.actor.top: #code inspiré de jonathan !
+        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom >= self.actor.top and alien.actor.bottom <= self.actor.top+6: #code inspiré de jonathan !
             sounds.death.play()
             animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
             self.vivant = False
         
-        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.top >= self.actor.top-6:
+        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom >= self.actor.top+6 and self.vivant == True:
             alien.set_alien_death(sounds, animate, clock, dev_mode)
 
