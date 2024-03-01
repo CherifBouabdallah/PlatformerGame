@@ -10,5 +10,5 @@ def initialisation(Actor):
     alien2= Joueur(Actor('alien'),0.5) # Création du personnage alien2
     alien2.actor.topleft =0, 600     # Position de départ
     ennemy= Ennemy(Actor('ennemy'), 0.075, "ennemy") # Création du personnage ennemy
-    ennemy.actor.topright = 1400, 700     # Position de départ
+    ennemy.actor.topright = 1300, 700     # Position de départ
     return alien, alien2, ennemy           # On retourne les personnages pour pouvoir les utiliser

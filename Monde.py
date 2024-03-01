@@ -56,7 +56,9 @@ def draw_monde(screen):
 
 def timer(screen):
     for i in range(3, 0, -1):
-        text = font.render(str(i), True, 'green', 'blue')
+        text = font.render(str(i), True, black)
+        screen.draw.text("fvagvbsfcfgdg", (WIDTH/2-pixel, HEIGHT/2-pixely), color="red", fontsize=60)
         textRect = text.get_rect()
-        textRect.center = (WIDTH // 2, HEIGHT // 2)
+        textRect.center = (700, 500)
         screen.blit(text, textRect)
+        #time.sleep(1)

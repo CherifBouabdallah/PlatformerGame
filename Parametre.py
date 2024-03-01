@@ -45,4 +45,6 @@ bkg=pygame.image.load("./images/windows_xp.png") #image de fond
 gravity= 0.45
 flag = True
 dev_mode = False
-font = pygame.font.Font(None, 32)
+font = pygame.font.Font(None, 128)
+counter = False
+black= (0, 0, 0)

@@ -62,7 +62,6 @@ def draw():
         end_button.draw()
     
     else:
-        timer(screen)
         draw_world()
 
 
@@ -98,9 +97,16 @@ def draw_world():
 
 
 # Cette fonction est aussi essentielle et elle est appelée directement par pgzrun.go() (à la fin). 
-# Elle est la fonction rappelée systématiquement par pgzrun.go() pour que les éléments évolue. 
+# Elle est la fonction rappelée systématiquement par pgzrun.go() pour que les éléments évoluent. 
+        
+
 def update():
     if flag_menu != 0:
+        if not counter:
+            timer(screen)
+            screen.draw.text("ysdfsa", (WIDTH/2-pixel, HEIGHT/2-pixely), color="red", fontsize=60)
+            pygame.display.flip()
+            #counter = True 
 
         # Déplacement de l'alien volant
         alien.deplacement_volant()
