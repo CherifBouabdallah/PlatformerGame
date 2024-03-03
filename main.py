@@ -1,6 +1,7 @@
 import pgzrun
 import pygame
-import time                             
+import time
+from pgzhelper import *
 from Parametre import * 
 from Monde import *
 from Joueur import * 
