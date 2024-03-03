@@ -95,6 +95,7 @@ class Joueur():
                 if bloc[1].colliderect(self.actor.left, self.actor.top, self.actor.width, self.actor.height) and bloc[2] == 4:
                     sounds.death.play()
                     level += 1
+                    print('duh')
 
 
     
@@ -104,6 +105,9 @@ class Joueur():
                 self.vitesse = -15
                 self.jump_count += 1
                 sounds.jump.play()
+
+        if keyboard.backspace:
+            exit()
 
         if dy == 0:
             self.jump_count = 0
@@ -143,7 +147,7 @@ class Joueur():
     
     # Défini ce qui se passe si l'alien meurt
     def set_alien_death(self, sounds,animate, clock, dev_mode):
-        dev_mode = True
+        #dev_mode = True
         if not dev_mode:
             self.image('alien_hurt',self.scale) 
             sounds.death.play()

@@ -125,7 +125,7 @@ def time_clock():
 
 def update():
     if flag_menu != 0:
-
+        print(level)
 
         # Déplacement de l'alien volant
         alien.deplacement_volant()

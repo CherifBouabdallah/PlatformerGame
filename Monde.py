@@ -10,8 +10,8 @@ from Parametre import *
  
 def monde_rect():
         L_monde=[]
-        deb=len(liste_mondes[0][0])-nbr_pixel # Ces deux variables là disent oû le monde affiché doit commencer
-        fi=len(liste_mondes[0][0])
+        deb=len(liste_mondes[level][0])-nbr_pixel # Ces deux variables là disent oû le monde affiché doit commencer
+        fi=len(liste_mondes[level][0])
         nb_ligne=0
         for ligne in liste_mondes[0]: # on parcours les lignes 
             nb_col = 0

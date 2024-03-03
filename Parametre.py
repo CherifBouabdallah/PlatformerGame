@@ -4,6 +4,7 @@ import os
 ## Taille de l'image 
 WIDTH = 1600
 HEIGHT = 900
+level = 0
 
 ## Map du monde 
 Monde = [
@@ -67,7 +68,7 @@ Monde2 = [
 liste_mondes = [Monde, Monde2]
 
 ## Caractéristique du monde
-nbr_pixel= len(liste_mondes[0]) # le nombre de bloc dans mon monde, il y en aura autant que dans la matrice
+nbr_pixel= len(liste_mondes[level]) # le nombre de bloc dans mon monde, il y en aura autant que dans la matrice
 pixel= round(WIDTH/nbr_pixel) # taille horizontale des blocs 
 pixely= round(HEIGHT/nbr_pixel) # taille verticale des blocs
 
@@ -84,7 +85,6 @@ gravity= 0.45
 dev_mode = False
 font = pygame.font.Font(None, 32)
 black= (0, 0, 0)
-level = 0
 
 sound_folder = "sounds"
 theme_sound = pygame.mixer.Sound(os.path.join(sound_folder, "overworld_theme.wav"))
