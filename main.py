@@ -1,7 +1,6 @@
 import pgzrun
 import pygame
-import time
-from pgzhelper import *
+import time                             
 from Parametre import * 
 from Monde import *
 from Joueur import * 
@@ -16,7 +15,7 @@ L_alien.append(alien)
 L_alien.append(alien2)
 L_ennemy.append(ennemy)
 
-flag_menu = 0 # 0 - le menu apparait, autre le jeu se lance 
+flag_menu = 0
 flag_timer = 0
 start_button=Actor("start_button",pos=(600,450)) # Donne le bouton début 
 end_button=Actor("end_button",pos=(1000,450)) # Donne le bouton sortir
@@ -25,6 +24,8 @@ start_button.scale = 0.08
 end_button.scale = 0.3
 
 start_time = time.time()
+
+
 
 ################################################################################################################
 ## Gestion des évènements
@@ -49,6 +50,8 @@ def on_mouse_down(pos,button):
     for i in L_alien:
         if button == mouse.LEFT and i.actor.collidepoint(pos): 
             i.set_alien_hurt(sounds,clock)
+
+
 
 
 ################################################################################################################
@@ -122,11 +125,12 @@ def time_clock():
 def update():
     if flag_menu != 0:
 
+
         # Déplacement de l'alien volant
         alien.deplacement_volant()
 
         # Déplacement de l'alien rampant
-        alien2.deplacement_rampant(ennemy, keyboard,animate,sounds, clock)
+        alien2.deplacement_rampant(ennemy, keyboard,animate,sounds, clock, level)
         alien2.DEV_MODE(keyboard, dev_mode)
 
         ennemy.deplacement_rampant(gravity, sounds, animate, clock) 
@@ -134,7 +138,8 @@ def update():
 
         # la gestion de la suite dois être placé ici
 
-
+    if not alien2.vivant:
+        music_channel.stop()
 
     
 pgzrun.go()

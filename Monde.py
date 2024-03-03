@@ -10,10 +10,10 @@ from Parametre import *
  
 def monde_rect():
         L_monde=[]
-        deb=len(Monde[0])-nbr_pixel # Ces deux variables là disent oû le monde affiché doit commencer
-        fi=len(Monde[0])
+        deb=len(liste_mondes[0][0])-nbr_pixel # Ces deux variables là disent oû le monde affiché doit commencer
+        fi=len(liste_mondes[0][0])
         nb_ligne=0
-        for ligne in Monde: # on parcours les lignes 
+        for ligne in liste_mondes[0]: # on parcours les lignes 
             nb_col = 0
             
             for i in ligne[deb:fi]: # on parcours les colonnes
@@ -35,6 +35,13 @@ def monde_rect():
 
                 if i== 3: 
                     img = pygame.transform.scale(cloud_img, (pixel, pixely))
+                    img_rect = img.get_rect()
+                    img_rect.x=nb_col*pixel
+                    img_rect.y=nb_ligne*pixely
+                    L_monde.append((img, img_rect,i))
+
+                if i== 4: 
+                    img = pygame.transform.scale(end_level, (pixel, pixely))
                     img_rect = img.get_rect()
                     img_rect.x=nb_col*pixel
                     img_rect.y=nb_ligne*pixely

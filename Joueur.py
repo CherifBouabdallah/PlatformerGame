@@ -4,7 +4,6 @@ from pgzhelper import *
 from Parametre import *
 from Monde import *
 
-
 ''' Cette classe définie mes personnages.
      Elle comprend l'ensemble des méthodes qui leurs sont appliquées '''
 
@@ -53,9 +52,11 @@ class Joueur():
         # 2. De la gravité
         # 3. Des touches claviers 
 
-    def deplacement_rampant(self, ennemy, keyboard, animate, sounds, clock):
+    def deplacement_rampant(self, ennemy, keyboard, animate, sounds, clock, level):
         L_monde=monde_rect() # Création du monde 
-      
+
+
+
         # définition des variables de déplacement
         dx=0 # Pas de déplacement de base horizontal
         # dy=2 # Déplacement uniforme on tient pas compte de la gravité
@@ -65,10 +66,10 @@ class Joueur():
         dy=self.vitesse # On déplace de la vitesse
 
         # gestion des déplacements
-        if keyboard.left: # Gestion de la touche clavier "left"
+        if keyboard.left or keyboard.a: # Gestion de la touche clavier "left"
             dx=-8
             self.gauche=True # Il regarde à gauche 
-        if keyboard.right: # Gestion de la touche clavier "right"
+        if keyboard.right or keyboard.d: # Gestion de la touche clavier "right"
             dx=8
             self.gauche=False  # Il regarde à droite
 
@@ -81,18 +82,20 @@ class Joueur():
         # Gestion des collisions avec le monde 
         for bloc in L_monde:
                 #collision verticale: on regarde si la future position va rentrer en conflit avec un bloc  du monde
-                if bloc[1].colliderect(self.actor.left, self.actor.top+dy, self.actor.width, self.actor.height):
+                if bloc[1].colliderect(self.actor.left, self.actor.top+dy, self.actor.width, self.actor.height) and bloc[2] != 4:
                     dy=0 # Si il y a conflit/ collision on bouge pas 
                     self.vitesse=0 # On remet la vitesse à 0 
                     if bloc[2]==2: # On regarde si le bloc est de la lave. Si c'est de la lave. Le joueur meurt 
                         self.set_alien_death(sounds,animate,clock, dev_mode)
+
                 #collision horizontale: on regarde les collision horizontale
-                if bloc[1].colliderect(self.actor.left+dx, self.actor.top, self.actor.width, self.actor.height):
+                if bloc[1].colliderect(self.actor.left+dx, self.actor.top, self.actor.width, self.actor.height) and bloc[2] != 4:
                     dx=0
-        
-        
-        #if self.actor.colliderect(ennemy.actor.left, ennemy.actor.top, ennemy.actor.width, ennemy.actor.height):
-        #    self.set_alien_death(sounds,animate,clock, dev_mode)
+                
+                if bloc[1].colliderect(self.actor.left, self.actor.top, self.actor.width, self.actor.height) and bloc[2] == 4:
+                    sounds.death.play()
+                    level += 1
+
 
     
         # Gestion de la touche clavier "up"
@@ -100,6 +103,7 @@ class Joueur():
             if dy== 0: #or self.jump_count < self.max_jump: # Si il est au sol
                 self.vitesse = -15
                 self.jump_count += 1
+                sounds.jump.play()
 
         if dy == 0:
             self.jump_count = 0
@@ -139,6 +143,7 @@ class Joueur():
     
     # Défini ce qui se passe si l'alien meurt
     def set_alien_death(self, sounds,animate, clock, dev_mode):
+        dev_mode = True
         if not dev_mode:
             self.image('alien_hurt',self.scale) 
             sounds.death.play()
@@ -199,11 +204,12 @@ class Ennemy(Joueur): #code repris du cours. héritage
 
     def set_ennemy_death(self, sounds, animate, dev_mode, alien, clock):
 
-        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom >= self.actor.top and alien.actor.bottom <= self.actor.top+6: #code inspiré de jonathan !
+        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom <= self.actor.top and alien.actor.bottom >= self.actor.top-6: #code inspiré de jonathan !
             sounds.death.play()
             animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
             self.vivant = False
         
-        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom >= self.actor.top+6 and self.vivant == True:
+        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom > self.actor.top and alien.actor.top <= self.actor.bottom and self.vivant == True:
             alien.set_alien_death(sounds, animate, clock, dev_mode)
+
 
