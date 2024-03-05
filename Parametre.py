@@ -4,7 +4,6 @@ import os
 ## Taille de l'image 
 WIDTH = 1600
 HEIGHT = 900
-level = 0
 
 ## Map du monde 
 Monde = [
@@ -24,9 +23,9 @@ Monde = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
     [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
     [1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
@@ -68,9 +67,13 @@ Monde2 = [
 liste_mondes = [Monde, Monde2]
 
 ## Caractéristique du monde
-nbr_pixel= len(liste_mondes[level]) # le nombre de bloc dans mon monde, il y en aura autant que dans la matrice
+nbr_pixel= len(liste_mondes[0]) # le nombre de bloc dans mon monde, il y en aura autant que dans la matrice
 pixel= round(WIDTH/nbr_pixel) # taille horizontale des blocs 
 pixely= round(HEIGHT/nbr_pixel) # taille verticale des blocs
+
+nbr_pixel2= len(liste_mondes[1]) # le nombre de bloc dans mon monde, il y en aura autant que dans la matrice
+pixel2= round(WIDTH/nbr_pixel2) # taille horizontale des blocs 
+pixely2= round(HEIGHT/nbr_pixel2) # taille verticale des blocs
 
 
 ## Image des blocs
@@ -78,7 +81,7 @@ lava_img = pygame.image.load('images/lave.png')
 dirt_img = pygame.image.load('images/grass.png')
 cloud_img = pygame.image.load('images/cloud.png')
 end_level = pygame.image.load('images/alien_hurt.png')
-bkg=pygame.image.load("./images/windows_xp.png") #image de fond
+bkg=pygame.image.load("./images/windows_xp.jpg") #image de fond
 
 ## Constante de gravité de notre monde
 gravity= 0.45

@@ -88,8 +88,12 @@ def draw_world():
     screen.clear() ## Efface l'écran précédent
     bkg_img=pygame.transform.scale(bkg,(WIDTH, HEIGHT))
     screen.blit(bkg_img ,(0,0))
-    draw_monde(screen)
-
+    
+    if alien2.level == 0:
+        draw_monde(screen)
+    if alien2.level == 1:
+        draw_monde_2(screen)
+    
     time_counter = font.render(f'Time in game : {time_clock()//60}m {time_clock()%60}s', True, (0, 0, 0))
     screen.blit(time_counter, (0, 0))
 
@@ -125,16 +129,16 @@ def time_clock():
 
 def update():
     if flag_menu != 0:
-        print(level)
+        #print(level)
 
         # Déplacement de l'alien volant
         alien.deplacement_volant()
 
         # Déplacement de l'alien rampant
-        alien2.deplacement_rampant(ennemy, keyboard,animate,sounds, clock, level)
+        alien2.deplacement_rampant(ennemy, keyboard,animate,sounds, clock)
         alien2.DEV_MODE(keyboard, dev_mode)
 
-        ennemy.deplacement_rampant(gravity, sounds, animate, clock) 
+        ennemy.deplacement_rampant(gravity, sounds, animate, clock, alien2) 
         ennemy.set_ennemy_death(sounds, animate, dev_mode, alien2, clock)
 
         # la gestion de la suite dois être placé ici

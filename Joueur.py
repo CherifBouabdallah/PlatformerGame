@@ -20,7 +20,7 @@ class Joueur():
         self.actor.scale=scale # Permet de gérer la taille de l'image du personnage
         self.name=name # Nom de l'image
         self.jump_count = 0
-        self.max_jump = 2
+        self.level = 0
 
     ## Cette méthode permet l'affichage d'une image à taille voulu. 
     ## Il y a deux options
@@ -52,9 +52,12 @@ class Joueur():
         # 2. De la gravité
         # 3. Des touches claviers 
 
-    def deplacement_rampant(self, ennemy, keyboard, animate, sounds, clock, level):
-        L_monde=monde_rect() # Création du monde 
+    def deplacement_rampant(self, ennemy, keyboard, animate, sounds, clock):
+        L_monde=monde_rect() # Création du monde
+        L_monde_2 = monde_rect_2()
 
+        if self.level == 1:
+            L_monde = L_monde_2
 
 
         # définition des variables de déplacement
@@ -94,8 +97,10 @@ class Joueur():
                 
                 if bloc[1].colliderect(self.actor.left, self.actor.top, self.actor.width, self.actor.height) and bloc[2] == 4:
                     sounds.death.play()
-                    level += 1
-                    print('duh')
+                    self.level += 1
+                    self.actor.topright = 50, 750
+                    ennemy.actor.topright = 150, 700
+                    time.sleep(1) 
 
 
     
@@ -103,14 +108,10 @@ class Joueur():
         if keyboard.space or keyboard.up:
             if dy== 0: #or self.jump_count < self.max_jump: # Si il est au sol
                 self.vitesse = -15
-                self.jump_count += 1
                 sounds.jump.play()
 
         if keyboard.backspace:
             exit()
-
-        if dy == 0:
-            self.jump_count = 0
 
 
         # Une fois que l'on sait de combien on se déplace, on fait effectivement les déplacement    
@@ -147,7 +148,7 @@ class Joueur():
     
     # Défini ce qui se passe si l'alien meurt
     def set_alien_death(self, sounds,animate, clock, dev_mode):
-        #dev_mode = True
+        dev_mode = True
         if not dev_mode:
             self.image('alien_hurt',self.scale) 
             sounds.death.play()
@@ -161,8 +162,13 @@ class Ennemy(Joueur): #code repris du cours. héritage
     def __init__(self, actor, scale=1, name="ennemy"):
         super().__init__(actor, scale, name)
 
-    def deplacement_rampant(self, dy, sounds, animate, clock):
+    def deplacement_rampant(self, dy, sounds, animate, clock, alien2):
         L_monde=monde_rect() # Création du monde 
+        L_monde_2 = monde_rect_2()
+
+        if alien2.level == 1:
+            L_monde = L_monde_2
+
         # définition des variables de déplacement
         dx = 5
         
@@ -211,7 +217,6 @@ class Ennemy(Joueur): #code repris du cours. héritage
         if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom <= self.actor.top and alien.actor.bottom >= self.actor.top-6: #code inspiré de jonathan !
             sounds.death.play()
             animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
-            self.vivant = False
         
         if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom > self.actor.top and alien.actor.top <= self.actor.bottom and self.vivant == True:
             alien.set_alien_death(sounds, animate, clock, dev_mode)
