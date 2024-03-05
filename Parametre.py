@@ -24,9 +24,9 @@ Monde = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0],
-    [1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    [0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+    [0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 5, 0, 0, 0, 0, 0, 0],
+    [1, 1, 5, 2, 2, 2, 2, 2, 2, 2, 1, 1, 5, 5, 1, 1, 1, 1, 1, 1]
 ]
 
 Monde2 = [
@@ -81,6 +81,7 @@ lava_img = pygame.image.load('images/lave.png')
 dirt_img = pygame.image.load('images/grass.png')
 cloud_img = pygame.image.load('images/cloud.png')
 end_level = pygame.image.load('images/alien_hurt.png')
+stone_img = pygame.image.load('images/stone.png')
 bkg=pygame.image.load("./images/windows_xp.jpg") #image de fond
 
 ## Constante de gravité de notre monde
@@ -93,3 +94,4 @@ sound_folder = "sounds"
 theme_sound = pygame.mixer.Sound(os.path.join(sound_folder, "overworld_theme.wav"))
 music_channel = pygame.mixer.Channel(0)  # Assign the first channel to the music
 music_channel.play(theme_sound, loops=-1)
+music_channel.set_volume(0.25)

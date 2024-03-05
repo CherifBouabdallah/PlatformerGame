@@ -98,9 +98,9 @@ class Joueur():
                 if bloc[1].colliderect(self.actor.left, self.actor.top, self.actor.width, self.actor.height) and bloc[2] == 4:
                     sounds.death.play()
                     self.level += 1
-                    self.actor.topright = 50, 750
+                    self.actor.topright = 74, 636
                     ennemy.actor.topright = 150, 700
-                    time.sleep(1) 
+                    time.sleep(0.5) 
 
 
     

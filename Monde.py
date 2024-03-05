@@ -47,7 +47,14 @@ def monde_rect():
                     img_rect.y=nb_ligne*pixely
                     L_monde.append((img, img_rect,i))
 
-                    
+                
+                if i== 5: 
+                    img = pygame.transform.scale(stone_img, (pixel, pixely))
+                    img_rect = img.get_rect()
+                    img_rect.x=nb_col*pixel
+                    img_rect.y=nb_ligne*pixely
+                    L_monde.append((img, img_rect,i))                
+
                 nb_col += 1
             nb_ligne +=1
 
@@ -96,6 +103,13 @@ def monde_rect_2():
 
                 if i== 4: 
                     img = pygame.transform.scale(end_level, (pixel2, pixely2))
+                    img_rect = img.get_rect()
+                    img_rect.x=nb_col2*pixel2
+                    img_rect.y=nb_ligne2*pixely2
+                    L_monde_2.append((img, img_rect,i))
+
+                if i== 5: 
+                    img = pygame.transform.scale(stone_img, (pixel2, pixely2))
                     img_rect = img.get_rect()
                     img_rect.x=nb_col2*pixel2
                     img_rect.y=nb_ligne2*pixely2

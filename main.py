@@ -97,6 +97,9 @@ def draw_world():
     time_counter = font.render(f'Time in game : {time_clock()//60}m {time_clock()%60}s', True, (0, 0, 0))
     screen.blit(time_counter, (0, 0))
 
+    pos = font.render(str(alien2.actor.topright), True, (0, 0, 0))
+    screen.blit(pos, (800, 0))
+
     for i in L_alien:
         i.actor.draw()
         if i.gauche:
