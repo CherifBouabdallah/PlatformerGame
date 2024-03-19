@@ -28,6 +28,8 @@ start_time = time.time()
 
 
 
+
+
 ################################################################################################################
 ## Gestion des évènements
 ################################################################################################################
@@ -77,7 +79,8 @@ def draw():
             flag_timer = 0
 
     if flag_menu == 0:
-        screen.fill('white')
+        bkg_img=pygame.transform.scale(bkg,(WIDTH, HEIGHT))
+        screen.blit(bkg_img ,(0,0))
         start_button.draw()
         end_button.draw()
     
@@ -139,7 +142,6 @@ def update():
 
         # Déplacement de l'alien rampant
         alien2.deplacement_rampant(ennemy, keyboard,animate,sounds, clock)
-        alien2.DEV_MODE(keyboard, dev_mode)
 
         ennemy.deplacement_rampant(gravity, sounds, animate, clock, alien2) 
         ennemy.set_ennemy_death(sounds, animate, dev_mode, alien2, clock)
@@ -151,3 +153,4 @@ def update():
 
     
 pgzrun.go()
+

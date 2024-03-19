@@ -60,6 +60,10 @@ class Joueur():
             L_monde = L_monde_2
 
 
+        if self.actor.y < 0:
+            dy = 0
+
+
         # définition des variables de déplacement
         dx=0 # Pas de déplacement de base horizontal
         # dy=2 # Déplacement uniforme on tient pas compte de la gravité
@@ -99,8 +103,9 @@ class Joueur():
                     sounds.death.play()
                     self.level += 1
                     self.actor.topright = 74, 636
-                    ennemy.actor.topright = 150, 700
-                    time.sleep(0.5) 
+                    ennemy.actor.topright = 300, 700
+                    ennemy.vivant = True
+                    time.sleep(0.25) 
 
 
     
@@ -130,21 +135,6 @@ class Joueur():
             self.image('alien_g',0)
         else: 
             self.image('alien',self.scale)
-
-
-    def DEV_MODE(self, keyboard, dev_mode): #cette fonction va me permettre d'etre invincible
-        if keyboard.k:
-            dev_mode = True
-            self.topright = 0, 0
-            print('DEV_MODE on')
-
-        if keyboard.l:
-            dev_mode = False
-            print('DEV_Mode off')
-            print(dev_mode)
-
-        #print(dev_mode)    
-        return dev_mode
     
     # Défini ce qui se passe si l'alien meurt
     def set_alien_death(self, sounds,animate, clock, dev_mode):
@@ -168,6 +158,7 @@ class Ennemy(Joueur): #code repris du cours. héritage
 
         if alien2.level == 1:
             L_monde = L_monde_2
+            sounds.monkey.play()
 
         # définition des variables de déplacement
         dx = 5
@@ -190,7 +181,7 @@ class Ennemy(Joueur): #code repris du cours. héritage
         for bloc in L_monde:
             #collision verticale: on regarde si la future position va rentrer en conflit avec un bloc  du monde
             if bloc[1].colliderect(self.actor.left, self.actor.top+dy, self.actor.width, self.actor.height):
-                dy=0 # Si il y a conflit/ collision on bouge pas 
+                dy = 0 # Si il y a conflit/ collision on bouge pas 
                 self.vitesse=0 # On remet la vitesse à 0 
                 if bloc[1].colliderect(self.actor.left, self.actor.top, self.actor.width, self.actor.height):
                     if dx < 0:
@@ -214,9 +205,10 @@ class Ennemy(Joueur): #code repris du cours. héritage
 
     def set_ennemy_death(self, sounds, animate, dev_mode, alien, clock):
 
-        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom <= self.actor.top and alien.actor.bottom >= self.actor.top-6: #code inspiré de jonathan !
+        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom <= self.actor.top and alien.actor.bottom >= self.actor.top-10: #code inspiré de jonathan !
             sounds.death.play()
             animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
+            alien.vitesse = -15
         
         if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom > self.actor.top and alien.actor.top <= self.actor.bottom and self.vivant == True:
             alien.set_alien_death(sounds, animate, clock, dev_mode)
