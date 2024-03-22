@@ -89,20 +89,20 @@ class Joueur():
         # Gestion des collisions avec le monde 
         for bloc in L_monde:
                 #collision verticale: on regarde si la future position va rentrer en conflit avec un bloc  du monde
-                if bloc[1].colliderect(self.actor.left, self.actor.top+dy, self.actor.width, self.actor.height) and bloc[2] != 4:
+                if bloc[1].colliderect(self.actor.left, self.actor.top+dy, self.actor.width, self.actor.height) and bloc[2] != 4 and bloc[2] != 6:
                     dy=0 # Si il y a conflit/ collision on bouge pas 
                     self.vitesse=0 # On remet la vitesse à 0 
                     if bloc[2]==2: # On regarde si le bloc est de la lave. Si c'est de la lave. Le joueur meurt 
                         self.set_alien_death(sounds,animate,clock, dev_mode)
 
                 #collision horizontale: on regarde les collision horizontale
-                if bloc[1].colliderect(self.actor.left+dx, self.actor.top, self.actor.width, self.actor.height) and bloc[2] != 4:
+                if bloc[1].colliderect(self.actor.left+dx, self.actor.top, self.actor.width, self.actor.height) and bloc[2] != 4 and bloc[2] != 6:
                     dx=0
                 
                 if bloc[1].colliderect(self.actor.left, self.actor.top, self.actor.width, self.actor.height) and bloc[2] == 4:
                     sounds.death.play()
                     self.level += 1
-                    self.actor.topright = 74, 636
+                    self.actor.topright = 140, 636
                     ennemy.actor.topright = 300, 700
                     ennemy.vivant = True
                     time.sleep(0.25) 
@@ -138,14 +138,15 @@ class Joueur():
     
     # Défini ce qui se passe si l'alien meurt
     def set_alien_death(self, sounds,animate, clock, dev_mode):
-        dev_mode = True
+        #dev_mode = True
         if not dev_mode:
             self.image('alien_hurt',self.scale) 
             sounds.death.play()
-            animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
-            clock.schedule_unique(self.set_alien_normal, 1.0)
+            #animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
+            #clock.schedule_unique(self.set_alien_normal, 1.0)
             self.vivant = False
-        
+            self.actor.scale = 0.00001
+            self.actor.topright = 50, 50
 
             
 class Ennemy(Joueur): #code repris du cours. héritage
@@ -158,7 +159,6 @@ class Ennemy(Joueur): #code repris du cours. héritage
 
         if alien2.level == 1:
             L_monde = L_monde_2
-            sounds.monkey.play()
 
         # définition des variables de déplacement
         dx = 5
@@ -180,10 +180,10 @@ class Ennemy(Joueur): #code repris du cours. héritage
 
         for bloc in L_monde:
             #collision verticale: on regarde si la future position va rentrer en conflit avec un bloc  du monde
-            if bloc[1].colliderect(self.actor.left, self.actor.top+dy, self.actor.width, self.actor.height):
+            if bloc[1].colliderect(self.actor.left, self.actor.top+dy, self.actor.width, self.actor.height) and bloc[2] != 6:
                 dy = 0 # Si il y a conflit/ collision on bouge pas 
                 self.vitesse=0 # On remet la vitesse à 0 
-                if bloc[1].colliderect(self.actor.left, self.actor.top, self.actor.width, self.actor.height):
+                if bloc[1].colliderect(self.actor.left+dx, self.actor.top, self.actor.width, self.actor.height) and bloc[2] != 6:
                     if dx < 0:
                         dx = 5
                     else:
@@ -205,7 +205,7 @@ class Ennemy(Joueur): #code repris du cours. héritage
 
     def set_ennemy_death(self, sounds, animate, dev_mode, alien, clock):
 
-        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom <= self.actor.top and alien.actor.bottom >= self.actor.top-10: #code inspiré de jonathan !
+        if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom <= self.actor.top and alien.actor.bottom >= self.actor.top-15: #code inspiré de jonathan !
             sounds.death.play()
             animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
             alien.vitesse = -15

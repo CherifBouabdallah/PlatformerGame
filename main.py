@@ -11,8 +11,8 @@ from Initialisation import *
 ## Initialisation du jeu 
 ################################################################################################################
 
-alien, alien2, ennemy = initialisation(Actor)
-L_alien.append(alien)
+alien2, ennemy = initialisation(Actor)
+#L_alien.append(alien)
 L_alien.append(alien2)
 L_ennemy.append(ennemy)
 
@@ -26,9 +26,32 @@ end_button.scale = 0.3
 
 start_time = time.time()
 
+def restart():
+    alien2.vivant = True
+    ennemy.vivant = True
+    
+    start_time = time.time()
+
+    alien2.level = 0
+    ennemy.level = 0
+
+    alien2.actor.topright = 50, 750
+    ennemy.actor.topright = 1300, 740
+
+    for i in range(3, 0, -1):
+            screen.clear()
+            draw_world()
+            screen.draw.text(str(i), (WIDTH/2-pixel, (HEIGHT/2-pixely)-200), color="red", fontsize=200)
+            pygame.display.update()
+            time.sleep(1)
+            flag_timer = 0
+
+    return start_time
 
 
-
+def activ(keyboard):
+    if keyboard.r:
+        restart()
 
 ################################################################################################################
 ## Gestion des évènements
@@ -73,7 +96,7 @@ def draw():
         for i in range(3, 0, -1):
             screen.clear()
             draw_world()
-            screen.draw.text(str(i), (WIDTH/2-pixel, HEIGHT/2-pixely), color="red", fontsize=60)
+            screen.draw.text(str(i), (WIDTH/2-pixel, (HEIGHT/2-pixely)-200), color="red", fontsize=200)
             pygame.display.update()
             time.sleep(1)
             flag_timer = 0
@@ -120,8 +143,6 @@ def draw_world():
     if not alien2.vivant:
         screen.draw.text("You Lose", (WIDTH/2-pixel, HEIGHT/2-pixely), color="red", fontsize=60)
 
-
-
 ################################################################################################################
 ## Mise à jour
 ################################################################################################################   
@@ -135,10 +156,6 @@ def time_clock():
 
 def update():
     if flag_menu != 0:
-        #print(level)
-
-        # Déplacement de l'alien volant
-        alien.deplacement_volant()
 
         # Déplacement de l'alien rampant
         alien2.deplacement_rampant(ennemy, keyboard,animate,sounds, clock)
@@ -146,6 +163,7 @@ def update():
         ennemy.deplacement_rampant(gravity, sounds, animate, clock, alien2) 
         ennemy.set_ennemy_death(sounds, animate, dev_mode, alien2, clock)
 
+        activ(keyboard)
         # la gestion de la suite dois être placé ici
 
     if not alien2.vivant:
