@@ -53,11 +53,14 @@ class Joueur():
         # 3. Des touches claviers 
 
     def deplacement_rampant(self, ennemy, keyboard, animate, sounds, clock):
-        L_monde=monde_rect() # Création du monde
-        L_monde_2 = monde_rect_2()
+        #L_monde=monde_rect() # Création du monde
+        #L_monde_2 = monde_rect_2()
 
+        if self.level == 0:
+            L_monde=monde_rect()
+            
         if self.level == 1:
-            L_monde = L_monde_2
+            L_monde = monde_rect_2()
 
 
         if self.actor.y < 0:
