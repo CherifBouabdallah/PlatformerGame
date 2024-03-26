@@ -7,7 +7,7 @@ HEIGHT = 900
 
 ## Map du monde 
 Monde = [
-    [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -83,13 +83,20 @@ cloud_img = pygame.image.load('images/cloud.png')
 end_level = pygame.image.load('images/alien_hurt.png')
 stone_img = pygame.image.load('images/stone.png')
 arrow_img = pygame.image.load('images/arrow.png')
-bkg=pygame.image.load("./images/windows_xp.jpg") #image de fond
+bkg = pygame.image.load("./images/windows_xp.jpg") #image de fond
 
 ## Constante de gravité de notre monde
 gravity= 0.45
 dev_mode = False
 font = pygame.font.Font(None, 32)
 black= (0, 0, 0)
+
+alternatif_mode = False
+timer_time = 1
+bkg_alternatif = pygame.image.load("./images/japan_temple.png")
+image_gauche = 'alien_g'
+image_droite = 'alien'
+
 
 sound_folder = "sounds"
 theme_sound = pygame.mixer.Sound(os.path.join(sound_folder, "overworld_theme.wav"))

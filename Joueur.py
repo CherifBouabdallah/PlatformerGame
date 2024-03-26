@@ -71,9 +71,13 @@ class Joueur():
         dx=0 # Pas de déplacement de base horizontal
         # dy=2 # Déplacement uniforme on tient pas compte de la gravité
       
-        # Si on veut tenir compte de la gravité 
-        self.vitesse+=gravity # On fait augmenter la vitesse de chute 
-        dy=self.vitesse # On déplace de la vitesse
+        # Si on veut tenir compte de la gravité
+        if self.actor.y < 1000:
+            self.vitesse+=gravity # On fait augmenter la vitesse de chute 
+            dy=self.vitesse # On déplace de la vitesse
+        else:
+            dy=0 # On arrete le joueur
+
 
         # gestion des déplacements
         if keyboard.left or keyboard.a: # Gestion de la touche clavier "left"
@@ -105,6 +109,7 @@ class Joueur():
                 if bloc[1].colliderect(self.actor.left, self.actor.top, self.actor.width, self.actor.height) and bloc[2] == 4:
                     sounds.death.play()
                     self.level += 1
+                    #ennemy.level += 1
                     self.actor.topright = 140, 636
                     ennemy.actor.topright = 300, 700
                     ennemy.vivant = True
@@ -135,9 +140,9 @@ class Joueur():
     # On revient à l'image normale
     def set_alien_normal(self): 
         if self.gauche:
-            self.image('alien_g',0)
+            self.image(str(image_gauche),0)
         else: 
-            self.image('alien',self.scale)
+            self.image(str(image_droite),self.scale)
     
     # Défini ce qui se passe si l'alien meurt
     def set_alien_death(self, sounds,animate, clock, dev_mode):
@@ -145,11 +150,15 @@ class Joueur():
         if not dev_mode:
             self.image('alien_hurt',self.scale) 
             sounds.death.play()
-            #animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
-            #clock.schedule_unique(self.set_alien_normal, 1.0)
-            self.scale = 0.00001
-            self.actor.topright = 0, -150
+            animate(self.actor, tween="decelerate", pos=(self.actor.pos[0], 1000))
+            clock.schedule_unique(self.set_alien_normal, 1.0)
+            #self.scale = 0.00001
+            #self.actor.topright = 0, -100
             self.vivant = False
+    
+    def death_image(self):
+        if self.vivant == False:
+            self.image('alien_hurt', self.scale)
             
 class Ennemy(Joueur): #code repris du cours. héritage
     def __init__(self, actor, scale=1, name="ennemy"):
@@ -208,9 +217,11 @@ class Ennemy(Joueur): #code repris du cours. héritage
     def set_ennemy_death(self, sounds, animate, dev_mode, alien, clock):
 
         if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom <= self.actor.top and alien.actor.bottom >= self.actor.top-15: #code inspiré de jonathan !
+            self.vivant = False
             sounds.death.play()
             animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
-            alien.vitesse = -15
+            if alien.level != 0:
+                alien.vitesse = -15
         
         if alien.actor.left <= self.actor.right and alien.actor.right >= self.actor.left and alien.actor.bottom > self.actor.top and alien.actor.top <= self.actor.bottom and self.vivant == True:
             alien.set_alien_death(sounds, animate, clock, dev_mode)

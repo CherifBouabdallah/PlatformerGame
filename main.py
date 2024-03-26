@@ -18,20 +18,25 @@ L_ennemy.append(ennemy)
 
 flag_menu = 0
 flag_timer = 0
+
 start_button=Actor("start_button",pos=(600,450)) # Donne le bouton début 
 end_button=Actor("end_button",pos=(1000,450)) # Donne le bouton sortir
+alternatif_button = Actor("alternatif",pos=(800,600)) # Donne le bouton alternatif
 
 start_button.scale = 0.08
 end_button.scale = 0.3
+alternatif_button.scale = 0.1
 
 start_time = time.time()
 
 def restart():
+    alien2.scale = 0.75
+    ennemy.scale =  0.075
+
     alien2.vivant = True
     ennemy.vivant = True
     
-    start_time = time.time()
-    alien2.scale = 1 
+    start_time = time.time() 
 
     alien2.level = 0
     ennemy.level = 0
@@ -39,13 +44,14 @@ def restart():
     alien2.actor.topright = 50, 750
     ennemy.actor.topright = 1300, 740
 
+
     for i in range(3, 0, -1):
             screen.clear()
             draw_world()
             screen.draw.text(str(i), (WIDTH/2-pixel, (HEIGHT/2-pixely)-200), color="red", fontsize=200)
             pygame.display.update()
-            time.sleep(1)
-            flag_timer = 0
+            time.sleep(timer_time)
+
 
     return start_time
 
@@ -64,7 +70,7 @@ def activ(keyboard):
 
 
 def on_mouse_down(pos,button):
-    global flag_menu, flag_timer
+    global flag_menu, flag_timer, alternatif_mode
 
     if flag_menu ==0:
         if start_button.collidepoint(pos):
@@ -73,10 +79,26 @@ def on_mouse_down(pos,button):
             
         if end_button.collidepoint(pos):
             exit() # quite le programme
+        
+        if alternatif_button.collidepoint(pos):
+            flag_menu = 1
+            flag_timer = 1
+            alternatif_mode = True
     
     for i in L_alien:
         if button == mouse.LEFT and i.actor.collidepoint(pos): 
             i.set_alien_hurt(sounds,clock)
+
+
+
+def gestion_alternative(alternatif_mode):
+    global timer_time, bkg, image_gauche, image_droite
+    if alternatif_mode:
+        timer_time = 0.25
+        bkg = bkg_alternatif
+        image_droite = 'alien_hurt'
+        image_gauche = 'alien_hurt_g'
+
 
 
 
@@ -99,7 +121,7 @@ def draw():
             draw_world()
             screen.draw.text(str(i), (WIDTH/2-pixel, (HEIGHT/2-pixely)-200), color="red", fontsize=200)
             pygame.display.update()
-            time.sleep(1)
+            time.sleep(timer_time)
             flag_timer = 0
 
     if flag_menu == 0:
@@ -107,6 +129,7 @@ def draw():
         screen.blit(bkg_img ,(0,0))
         start_button.draw()
         end_button.draw()
+        alternatif_button.draw()
     
     else:
         draw_world()
@@ -160,9 +183,12 @@ def update():
 
         # Déplacement de l'alien rampant
         alien2.deplacement_rampant(ennemy, keyboard,animate,sounds, clock)
+        alien2.death_image()
 
         ennemy.deplacement_rampant(gravity, sounds, animate, clock, alien2) 
         ennemy.set_ennemy_death(sounds, animate, dev_mode, alien2, clock)
+
+        gestion_alternative(alternatif_mode)
 
         activ(keyboard)
         # la gestion de la suite dois être placé ici
