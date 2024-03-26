@@ -31,6 +31,7 @@ def restart():
     ennemy.vivant = True
     
     start_time = time.time()
+    alien2.scale = 1 
 
     alien2.level = 0
     ennemy.level = 0

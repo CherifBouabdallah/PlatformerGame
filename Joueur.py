@@ -147,10 +147,9 @@ class Joueur():
             sounds.death.play()
             #animate(self.actor, tween="decelerate", pos=(self.actor.pos[0],1000))
             #clock.schedule_unique(self.set_alien_normal, 1.0)
+            self.scale = 0.00001
+            self.actor.topright = 0, -150
             self.vivant = False
-            self.actor.scale = 0.00001
-            self.actor.topright = 50, 50
-
             
 class Ennemy(Joueur): #code repris du cours. héritage
     def __init__(self, actor, scale=1, name="ennemy"):
