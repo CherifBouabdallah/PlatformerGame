@@ -14,6 +14,7 @@ def initialisation(Actor):
     return alien2, ennemy           # On retourne les personnages pour pouvoir les utiliser
 
 # fleche verticale
+#other gameplay (other bkg + red guy)
 # reset boutton
 # level 3
 # boss
