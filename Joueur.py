@@ -104,13 +104,13 @@ class Joueur():
                     dx=0
                 
                 if bloc[1].colliderect(self.actor.left, self.actor.top, self.actor.width, self.actor.height) and bloc[2] == 4:
-                    sounds.death.play()
+                    sounds.next_level.play()
 
                     if self.level == 2:
                         self.level += 1
                         self.actor.topright = 140, 636
                         ennemy.actor.topright = 300, 1000
-                        sounds.monkey.play()
+                        #sounds.monkey.play()
 
                     if self.level < 2:
                         self.level += 1
