@@ -30,7 +30,9 @@ alternatif_button.scale = 0.1
 start_time = time.time()
 
 def restart():
-    global start_time
+    global start_time, finished
+
+    finished = False
 
     alien2.scale = 0.75
     ennemy.scale =  0.075
@@ -43,7 +45,7 @@ def restart():
     alien2.level = 0
     ennemy.level = 0
 
-    alien2.actor.topright = 50, 750
+    alien2.actor.topright = 70, 795
     ennemy.actor.topright = 1300, 740
 
 
@@ -53,7 +55,7 @@ def restart():
             screen.draw.text(str(i), (WIDTH/2-pixel, (HEIGHT/2-pixely)-200), color="red", fontsize=200)
             pygame.display.update()
             time.sleep(timer_time)
-            alien2.actor.topright = 50, 750
+            alien2.actor.topright = 70, 795
 
 
 def activ(keyboard):
@@ -69,11 +71,11 @@ def activ(keyboard):
 # on applique la fonction set_alien_hurt
 
 
-def on_mouse_down(pos,button):
+def on_mouse_down(pos):
     global flag_menu, flag_timer, alternatif_mode
 
-    if flag_menu == 0:
-        if start_button.collidepoint(pos):
+    if flag_menu == 0: #regarde si les boutons sont touchés uniquement si ils ne l'était pas avant
+        if start_button.collidepoint(pos): 
             flag_menu = 1
             flag_timer = 1
             
@@ -84,11 +86,6 @@ def on_mouse_down(pos,button):
             flag_menu = 1
             flag_timer = 1
             alternatif_mode = True
-    
-    for i in L_alien:
-        if button == mouse.LEFT and i.actor.collidepoint(pos): 
-            i.set_alien_hurt(sounds,clock)
-
 
 
 def gestion_alternative(alternatif_mode):
@@ -158,8 +155,8 @@ def draw_world():
         time_counter = font.render(f'Time in game : {time_clock()//60}m {time_clock()%60}s', True, (0, 0, 0))
         screen.blit(time_counter, (0, 0))
 
-        pos = font.render(str(alien2.actor.topright), True, (0, 0, 0))
-        screen.blit(pos, (800, 0))
+        #pos = font.render(str(alien2.actor.topright), True, (0, 0, 0))
+        #screen.blit(pos, (800, 0))
 
         for i in L_alien:
             i.actor.draw()
@@ -219,7 +216,10 @@ def update():
         la_fin()
 
     if not alien2.vivant:
-        music_channel.stop()
+        music_channel.set_volume(0)
+    else:
+        music_channel.set_volume(0.25)
+            
 
     
 pgzrun.go()

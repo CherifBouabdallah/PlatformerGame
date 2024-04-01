@@ -133,7 +133,7 @@ class Joueur():
 
     
         # Gestion de la touche clavier "up"
-        if keyboard.space or keyboard.up:
+        if keyboard.space or keyboard.up or keyboard.w:
             if dy== 0: #or self.jump_count < self.max_jump: # Si il est au sol
                 self.vitesse = -15
                 sounds.jump.play()
@@ -166,7 +166,7 @@ class Joueur():
             self.image('alien_hurt',self.scale) 
             sounds.death.play()
             animate(self.actor, tween="decelerate", pos=(self.actor.pos[0], 1000))
-            clock.schedule_unique(self.set_alien_normal, 1.0)
+            clock.schedule_unique(self.set_alien_normal, 0.5)
             #self.scale = 0.00001
             #self.actor.topright = 0, -100
             self.vivant = False
