@@ -82,13 +82,13 @@ def on_mouse_down(pos):
         if end_button.collidepoint(pos):
             exit() # quite le programme
         
-        if alternatif_button.collidepoint(pos):
+        if alternatif_button.collidepoint(pos): #gere le comportement si le bouton alternatif
             flag_menu = 1
             flag_timer = 1
             alternatif_mode = True
 
 
-def gestion_alternative(alternatif_mode):
+def gestion_alternative(alternatif_mode): #les modif si bouton alternatif
     global timer_time, bkg, ennemy_speed
     if alternatif_mode:
         timer_time = 0.25
@@ -97,7 +97,7 @@ def gestion_alternative(alternatif_mode):
         ennemy_speed = 12
 
 
-def la_fin():
+def la_fin(): #appelle le menu de fin
     global finished
     if alien2.level == 3:
         finished = True
@@ -118,7 +118,7 @@ def draw():
 
     global flag_timer #timer au début
     if flag_timer == 1:
-        for i in range(3, 0, -1):
+        for i in range(3, 0, -1): #timerrr
             screen.clear()
             draw_world()
             screen.draw.text(str(i), (WIDTH/2-pixel, (HEIGHT/2-pixely)-200), color="red", fontsize=200)
@@ -126,7 +126,7 @@ def draw():
             time.sleep(timer_time)
             flag_timer = 0
 
-    if flag_menu == 0:
+    if flag_menu == 0: #MENUUUU
         bkg_img=pygame.transform.scale(bkg,(WIDTH, HEIGHT))
         screen.blit(bkg_img ,(0,0))
         start_button.draw()
@@ -138,7 +138,7 @@ def draw():
     else:
         draw_world()
 
-def draw_world():
+def draw_world(): #appelle toutes les fonctions de dessin
     global timer_shown
     if not finished:
         screen.clear() ## Efface l'écran précédent
@@ -158,14 +158,14 @@ def draw_world():
         #pos = font.render(str(alien2.actor.topright), True, (0, 0, 0))
         #screen.blit(pos, (800, 0))
 
-        for i in L_alien:
+        for i in L_alien: #affiche l'alien
             i.actor.draw()
             if i.gauche:
                 i.image(i.name+"_g",i.scale)
             else: 
                 i.image(i.name,i.scale)
 
-        for i in L_ennemy:
+        for i in L_ennemy: #affiche l'ennemi
             i.actor.draw()
             if i.gauche:
                 i.image(i.name+"_g",i.scale)
