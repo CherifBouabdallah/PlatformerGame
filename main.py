@@ -181,7 +181,7 @@ def draw_world(): #appelle toutes les fonctions de dessin
         endd = bigfont.render(str('Vous avez terminé "Why did I play this game again ? - the game"'), True, (0, 0, 0))
         screen.blit(endd, ((WIDTH/2)-650, (HEIGHT/2)-150))
 
-        if not timer_shown:
+        if not timer_shown: #montre le temps final !
             global time_counter_end
             time_counter_end = font.render(f'Final time is : {time_clock()//60}m {time_clock()%60}s', True, (0, 0, 0))
             timer_shown = True
@@ -196,7 +196,7 @@ def draw_world(): #appelle toutes les fonctions de dessin
 # Elle est la fonction rappelée systématiquement par pgzrun.go() pour que les éléments évoluent. 
         
 
-def time_clock():
+def time_clock(): #compte le temps (inspiré de yoan)
     play_time = time.time() - start_time
     return round(play_time)
 

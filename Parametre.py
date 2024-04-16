@@ -150,7 +150,9 @@ timer_time = 1
 bkg_alternatif = pygame.image.load("./images/space_dark.png")
 ennemy_speed = 5
 
-sound_folder = "sounds"
+
+# pour la gestion du son, j'ai regardé la documentation pygame
+sound_folder = "sounds" 
 theme_sound = pygame.mixer.Sound(os.path.join(sound_folder, "overworld_theme.wav"))
 music_channel = pygame.mixer.Channel(0)  # Assign the first channel to the music
 music_channel.play(theme_sound, loops=-1)
