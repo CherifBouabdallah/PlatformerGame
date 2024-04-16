@@ -117,17 +117,17 @@ class Joueur():
                         ennemy.level += 1
                         ennemy.vivant = True
 
-                        if self.level == 1:
+                        if self.level == 1: #gestions des postions selon le niveau
                             self.actor.topright = 140, 636
                             ennemy.actor.topright = 300, 700 
                         if self.level == 2:
-                            self.actor.topright = 140, 500
+                            self.actor.topright = 140, 800
                             ennemy.actor.topright = 300, 700
                             time.sleep(0.25)
                         
 
 
-                    time.sleep(0.25)    
+                    time.sleep(0.25)   #adoucir le changement de niveau 
 
 
 
