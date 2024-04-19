@@ -161,7 +161,7 @@ class Joueur():
     
     # Défini ce qui se passe si l'alien meurt
     def set_alien_death(self, sounds, animate, clock, dev_mode):
-        dev_mode = True
+        #dev_mode = True
         if not dev_mode:
             self.image('alien_hurt',self.scale) 
             sounds.death.play()
